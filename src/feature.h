@@ -51,7 +51,7 @@
 
 /*
  * Suppress use of BOLD and BLINK attributes for setting bright foreground
- * and background, respectively.  Simulate BOLD using colorBD, boldFont or
+ * and background, respectively.  Simulate BOLD using colorBD or
  * overstrike characters.
  */
 /* #define NO_BRIGHTCOLOR */
@@ -79,16 +79,6 @@
  * overstrike then you don't usually need this
  */
 #define NO_PIXEL_DROPPING_AVOIDANCE
-
-/*
- * Also use bold font or overstrike even if we use colour for bold
- */
-/*#define VERYBOLD*/
-
-/*
- * Compile without support for real bold fonts
- */
-/* #define NO_BOLDFONT */
 
 /*
  * Add support for '-hc colour' for background highlight of selection

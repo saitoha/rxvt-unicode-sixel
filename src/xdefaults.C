@@ -187,15 +187,8 @@ static const struct {
 #if (MENUBAR_MAX)
     RSTRG(Rs_menu, "menu", "name[;tag]"),
 #endif
-#ifndef NO_BOLDFONT
-    STRG(Rs_boldFont, "boldFont", "fb", "fontname", "bold text font"),
-#endif
-    STRG(Rs_font + 0, "font", "fn", "fontname", "normal text font"),
+    STRG(Rs_font, "font", "fn", "fontname", "normal text font"),
 /* fonts: command-line option = resource name */
-#ifdef MULTICHAR_SET
-    STRG(Rs_multichar_encoding, "multichar_encoding", "km", "mode",
-	 "multichar encoding; mode = eucj|sjis|big5|gb|kr|noenc"),
-#endif				/* MULTICHAR_SET */
 #ifdef USE_XIM
     STRG(Rs_inputMethod, "inputMethod", "im", "name", "name of input method"),
     STRG(Rs_preeditType, "preeditType", "pt", "style",

@@ -483,9 +483,6 @@ enum {
 #if (MENUBAR_MAX)
   Rs_menu,
 #endif
-#ifndef NO_BOLDFONT
-  Rs_boldFont,
-#endif
 #ifdef GREEK_SUPPORT
   Rs_greek_keyboard,
   Rs_greektoggle_key,
