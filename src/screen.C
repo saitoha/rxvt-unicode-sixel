@@ -449,8 +449,8 @@ rxvt_term::scr_release()
     }
 #endif
 
-  delete talloc;
-  delete ralloc;
+  delete talloc; talloc = 0;
+  delete ralloc; ralloc = 0;
 
   free (screen.text);
   free (screen.tlen);

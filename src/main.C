@@ -638,7 +638,7 @@ rxvt_term::window_calc (unsigned int width, unsigned int height)
 void
 rxvt_term::tt_winch ()
 {
-  struct winsize  ws;
+  struct winsize ws;
 
   if (cmd_fd < 0)
     return;
