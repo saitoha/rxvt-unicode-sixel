@@ -1175,7 +1175,7 @@ rxvt_term::IM_get_IC ()
         preedit_attr = XVaCreateNestedList(0, XNArea, &rect,
                                            XNSpotLocation, &spot,
                                            XNForeground, fg, XNBackground, bg,
-                                       //XNFontSet, TermWin.fontset,
+                                           //XNFontSet, TermWin.fontset,
                                            NULL);
     } else if (input_style & XIMPreeditArea) {
         set_color (&fg, &bg);
@@ -1190,11 +1190,11 @@ rxvt_term::IM_get_IC ()
 
         preedit_attr = XVaCreateNestedList(0, XNArea, &rect,
                                            XNForeground, fg, XNBackground, bg,
-                                       //XNFontSet, TermWin.fontset,
+                                           //XNFontSet, TermWin.fontset,
                                            NULL);
         status_attr = XVaCreateNestedList(0, XNArea, &status_rect,
                                           XNForeground, fg, XNBackground, bg,
-                                      //XNFontSet, TermWin.fontset,
+                                          //XNFontSet, TermWin.fontset,
                                           NULL);
     }
     Input_Context = XCreateIC(xim, XNInputStyle, input_style,
