@@ -30,7 +30,7 @@ struct rxvt_font {
 
   char *name;
   codeset cs;
-  bool loaded;
+  bool loaded; // wether we tried loading it before (not wether it's loaded)
 
   // managed by the font object
   bool prop; // wether this is a proportional font or has other funny characteristics
