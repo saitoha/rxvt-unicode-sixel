@@ -1,7 +1,6 @@
 /*--------------------------------*-C-*---------------------------------*
  * File:	scrollbar-rxvt.c
  *----------------------------------------------------------------------*
- * $Id$
  *
  * Copyright (c) 1997,1998 mj olesen <olesen@me.QueensU.CA>
  * Copyright (c) 1999-2001 Geoff Wing <gcw@pobox.com>
