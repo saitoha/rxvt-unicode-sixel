@@ -40,7 +40,7 @@ rxvt_scrollbar_mapping(pR_ int map)
 #ifdef HAVE_SCROLLBARS
 
     if (map && !scrollbar_visible(R)) {
-	scrollbar_setIdle();
+	R->scrollBar.setIdle ();
 	if (!R->scrollBar.win)
 	    rxvt_Resize_scrollBar(aR);
 	if (R->scrollBar.win) {

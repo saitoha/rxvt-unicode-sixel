@@ -281,6 +281,11 @@ typedef struct {
   short           width;        /* scrollbar width                          */
   Window          win;
   int             (*update)(pR_ int, int, int, int);
+
+  void setIdle()   { state =  1 ; }
+  void setMotion() { state = 'm'; }
+  void setUp()     { state = 'U'; }
+  void setDn()     { state = 'D'; }
 } scrollBar_t;
 
 struct rxvt_vars {
