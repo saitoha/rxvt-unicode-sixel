@@ -359,15 +359,12 @@ rxvt_term::init_vars()
     return false;
 
 #if defined(XPM_BACKGROUND) || defined(TRANSPARENT)
-
   TermWin.pixmap = None;
 #endif
 #ifdef UTMP_SUPPORT
-
   next_utmp_action = SAVE;
 #endif
 #ifndef NO_SETOWNER_TTYDEV
-
   next_tty_action = SAVE;
 #endif
 

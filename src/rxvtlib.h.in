@@ -186,8 +186,8 @@ typedef struct {
  *     normal `unscrolled' screen region
  */
 typedef struct {
-  text_t        **text; /* _all_ the text                            */
   int16_t        *tlen; /* length of each text line                  */
+  text_t        **text; /* _all_ the text                            */
   rend_t        **rend; /* rendition, uses RS_ flags                 */
   row_col_t       cur;  /* cursor position on the screen             */
   uint16_t        tscroll;      /* top of settable scroll region             */

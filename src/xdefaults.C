@@ -683,7 +683,7 @@ rxvt_get_xdefaults(pR_ FILE *stream, const char *name)
 
 		if (kw == NULL)
 		    continue;
-		n = STRLEN(kw);
+		n = STRLEN (kw);
 		if (str[n] == ':' && rxvt_Str_match(str, kw)) {
 		    /* skip `keyword:' */
 		    str += (n + 1);
