@@ -83,7 +83,7 @@ distclean:
 	(cd $(srcdir); $(RMF) Makefile autoconf/Make.common)
 
 distdir:
-	cd doc && $(MAKE) yodl/versioninfo.yo
+	cd doc && $(MAKE) yodl/versioninfo.yo rxvt.html rxvtRef.txt
 	rm -rf $(VERNAME)
 	mkdir $(VERNAME)
 	rsync -aR `cat MANIFEST` $(VERNAME)/.
