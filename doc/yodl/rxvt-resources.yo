@@ -220,6 +220,10 @@ startdit()
 	bf(True): blank the pointer when a key is pressed or after a set number
 	of seconds of inactivity.
 	bf(False): the pointer is always visible [default].
+    dit(bf(pointerColor:) em(colour))
+        Mouse pointer foreground colour.
+    dit(bf(pointerColor2:) em(colour))
+        Mouse pointer background colour.
     dit(bf(pointerBlankDelay:) em(number))
 	Specifies number of seconds before blanking the pointer [default 2].
     dit(bf(backspacekey:) em(string))
