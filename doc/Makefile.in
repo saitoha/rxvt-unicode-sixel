@@ -79,6 +79,7 @@ install:
 	$(INSTALL_DATA) rxvt.7.man $(DESTDIR)$(man7dir)/$(RXVTNAME).$(man7ext)
 	$(INSTALL_DATA) rxvtc.1 $(DESTDIR)$(man1dir)/$(RXVTNAME)c.$(man1ext)
 	$(INSTALL_DATA) rxvtc.1 $(DESTDIR)$(man1dir)/$(RXVTNAME)d.$(man1ext)
+	if test -x "@TIC@"; then if test -n "@TIC@"; then @TIC@ etc/rxvt-unicode.terminfo; fi; fi
 
 uninstall:
 	-(cd $(mandir); $(RMF) $(RXVTNAME).$(manext) )
