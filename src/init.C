@@ -333,10 +333,11 @@ const char *const def_colorName[] =
 
 const char *const xa_names[NUM_XA] =
   {
+    "TEXT",
     "COMPOUND_TEXT",
+    "UTF8_STRING",
     "MULTIPLE",
     "TARGETS",
-    "TEXT",
     "TIMESTAMP",
     "VT_SELECTION",
     "INCR",
