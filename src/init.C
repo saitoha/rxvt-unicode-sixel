@@ -1002,25 +1002,26 @@ rxvt_term::Get_Colours ()
 
       xcol[1] = PixColors[Color_scroll];
 # ifdef PREFER_24BIT
-      xcol[0].set (R, 65535, 65535, 65535);
+      xcol[0].set (this, 65535, 65535, 65535);
       /*        XFreeColors(Xdisplay, XCMAP, &(xcol[0].pixel), 1, ~0); */
 # else
-      xcol[0].set (WhitePixel(Xdisplay, Xscreen));
+      xcol[0].set (this, WhitePixel (Xdisplay, Xscreen));
 # endif
 
       unsigned short pr1, pg1, pb1, pr0, pg0, pb0;
 
-      xcol[0].get (R, pr0, pg0, pb0);
-      xcol[1].get (R, pr1, pg1, pb1);
+      xcol[0].get (this, pr0, pg0, pb0);
+      xcol[1].get (this, pr1, pg1, pb1);
 
       /* bottomShadowColor */
-      if (!xcol[2].set (pr1 / 2, pg1 / 2, pb1 / 2))
+      if (!xcol[2].set (this, pr1 / 2, pg1 / 2, pb1 / 2))
         xcol[2] = PixColors[Color_Black];
 
       PixColors[Color_bottomShadow] = xcol[2];
 
       /* topShadowColor */
-      if (!xcol[1].set (                        min (pr0, max (pr0 / 5, pr1) * 7 / 5),
+      if (!xcol[1].set (this,
+                        min (pr0, max (pr0 / 5, pr1) * 7 / 5),
                         min (pg0, max (pg0 / 5, pg1) * 7 / 5),
                         min (pb0, max (pb0 / 5, pb1) * 7 / 5)))
         xcol[1] = PixColors[Color_White];
