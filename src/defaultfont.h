@@ -23,8 +23,6 @@
 #include "encoding.h"
 #include "rxvtvec.h"
 
-#include "defaultfont.intpro"	/* PROTOS for internal routines */
-
 typedef struct rxvt_vars rxvt_t;
 
 struct rxvt_font {
