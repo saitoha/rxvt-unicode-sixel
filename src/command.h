@@ -42,20 +42,28 @@
 
 #ifdef SCROLL_ON_SHIFT
 # define SCROLL_SHIFTKEY (shft)
+# define NOSCROLL_SHIFTKEY 0
 #else
 # define SCROLL_SHIFTKEY 0
+# define NOSCROLL_SHIFTKEY (shft)
 #endif
 #ifdef SCROLL_ON_CTRL
 # define SCROLL_CTRLKEY  (ctrl)
+# define NOSCROLL_CTRLKEY 0
 #else
 # define SCROLL_CTRLKEY 0
+# define NOSCROLL_CTRLKEY (ctrl)
 #endif
 #ifdef SCROLL_ON_META
 # define SCROLL_METAKEY  (meta)
+# define NOSCROLL_METAKEY 0
 #else
 # define SCROLL_METAKEY 0
+# define NOSCROLL_METAKEY (meta)
 #endif
-#define IS_SCROLL_MOD  (SCROLL_SHIFTKEY || SCROLL_CTRLKEY || SCROLL_METAKEY)
+#define IS_SCROLL_MOD  ((SCROLL_SHIFTKEY || SCROLL_CTRLKEY || SCROLL_METAKEY) \
+              && (!NOSCROLL_SHIFTKEY && !NOSCROLL_CTRLKEY && !NOSCROLL_METAKEY))
+
 
 /*
  * ESC-Z processing:
