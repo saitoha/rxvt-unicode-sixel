@@ -119,7 +119,6 @@ realclean: clean
 cleandir: realclean
 
 distclean: realclean
-	if test $(srcdir) = .; then $(MAKE) realclean; fi
 	(cd $(srcdir); $(RMF) Makefile)
 
 install: allbin alldoc

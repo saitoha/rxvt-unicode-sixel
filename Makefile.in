@@ -9,7 +9,7 @@ VPATH =		@srcdir@
 first_rule: all
 dummy:
 
-subdirs = src doc src/test
+subdirs = src doc
 allsubdirs = $(subdirs)
 
 DIST =	INSTALL README.configure configure Makefile Makefile.in ChangeLog
