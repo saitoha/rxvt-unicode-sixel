@@ -38,10 +38,10 @@ SEDREPLACE = -e 's%@@RXVT_VERSION@@%$(VERSION)%g;'\
 	./podtbl <$< >$@
 
 %.1.man.in: %.1.tbl
-	pod2man -n rxvt -r"$(VERSION)" -qnone -s1 -c "RXVT-UNICODE" <$< >$@
+	pod2man -n rxvt -r"$(VERSION)" -q\" -s1 -c "RXVT-UNICODE" <$< >$@
 
 %.7.man.in: %.7.tbl
-	pod2man -n rxvt -r"$(VERSION)" -qnone -s7 -c "RXVT-UNICODE" <$< >$@
+	pod2man -n rxvt -r"$(VERSION)" -q\" -s7 -c "RXVT-UNICODE" <$< >$@
 
 %.html: %.tbl
 	$(SED) $(SEDREPLACE) <$< | pod2html >$@
