@@ -1,7 +1,6 @@
 /*--------------------------------*-C-*---------------------------------*
- * File:	xpm.c
+ * File:	xpm.C
  *----------------------------------------------------------------------*
- * $Id$
  *
  * All portions of code are copyright by their respective author/s.
  * Copyright (c) 1997      Carsten Haitzler <raster@zip.com.au>

@@ -1,10 +1,10 @@
 /*--------------------------------*-C-*---------------------------------*
- * File:	strings.c
+ * File:	strings.C
  *----------------------------------------------------------------------*
- * $Id$
  *
  * All portions of code are copyright by their respective author/s.
  * Copyright (c) 1997-2001 Geoff Wing <gcw@pobox.com>
+ * Copyright (c) 2004      Marc Lehmann <pcg@goof.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
