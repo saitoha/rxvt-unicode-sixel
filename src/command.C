@@ -754,6 +754,7 @@ rxvt_term::process_x_events ()
   while (XPending (Xdisplay));
 }
 
+#ifdef CURSOR_BLINK
 void
 rxvt_term::blink_cb (time_watcher &w)
 {
@@ -761,6 +762,7 @@ rxvt_term::blink_cb (time_watcher &w)
   hidden_cursor = !hidden_cursor;
   want_refresh = 1;
 }
+#endif
 
 void
 rxvt_term::x_cb (io_watcher &w, short revents)
