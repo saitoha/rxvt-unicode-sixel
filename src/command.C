@@ -2693,7 +2693,7 @@ rxvt_process_csi_seq(pR)
 
     case CSI_78:		/* DECREQTPARM */
 	if (arg[0] == 0 || arg[0] == 1)
-	    R->tt_printf("\033[%d;1;1;112;112;1;0x", arg[0] + 2);
+	    R->tt_printf("\033[%d;1;1;128;128;1;0x", arg[0] + 2);
     /* FALLTHROUGH */
 
     default:
