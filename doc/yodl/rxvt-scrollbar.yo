@@ -2,9 +2,9 @@ COMMENT(-- $Id$ --)
 COMMENT(----------------------------------------------------------------------)
 manpagesection(THE SCROLLBAR)
 
-Lines of text that scroll off the top of the bf(rxvt) window (resource:
+Lines of text that scroll off the top of the bf(RXVTNAME()) window (resource:
 bf(saveLines)) and can be scrolled back using the scrollbar or by keystrokes. 
-The normal bf(rxvt) scrollbar has arrows and its behaviour is fairly
+The normal bf(RXVTNAME()) scrollbar has arrows and its behaviour is fairly
 intuitive.  The bf(xterm-scrollbar) is without arrows and its behaviour
 mimics that of em(xterm)
 

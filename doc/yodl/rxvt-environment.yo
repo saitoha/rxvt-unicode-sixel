@@ -2,8 +2,8 @@ COMMENT(-- $Id$ --)
 COMMENT(----------------------------------------------------------------------)
 manpagesection(ENVIRONMENT)
 
-bf(rxvt) sets the environment variables bf(TERM), bf(COLORTERM) and
+bf(RXVTNAME()) sets the environment variables bf(TERM), bf(COLORTERM) and
 bf(COLORFGBG).  The environment variable bf(WINDOWID) is set to the X window
-id number of the bf(rxvt) window and it also uses and sets the environment
-variable bf(DISPLAY) to specify which display terminal to use.  bf(rxvt) uses
+id number of the bf(RXVTNAME()) window and it also uses and sets the environment
+variable bf(DISPLAY) to specify which display terminal to use.  bf(RXVTNAME()) uses
 the environment variables bf(RXVTPATH) and bf(PATH) to find XPM files.

@@ -45,6 +45,7 @@ rxvt.1: rxvt.tbl Makefile
 
 SEDREPLACE = -e 's%@RXVT_VERSION@%$(VERSION)%g;'\
 	     -e 's%@RXVT_LSMDATE@%$(LSMDATE)%g;'\
+	     -e 's%@RXVT_NAME@%$(RXVTNAME)%g;'\
 	     -e 's%@RXVT_DATE@%$(DATE)%g;'\
 	     -e 's%@RXVT_MAINTEMAIL@%$(MAINTEMAIL)%g;'\
 	     -e 's%@RXVT_MAINT@%$(MAINT)%g;'\

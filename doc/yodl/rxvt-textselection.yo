@@ -13,6 +13,6 @@ startdit()
 	the entire line.
     dit(bf(Insertion):)
 	Pressing and releasing the Middle mouse button (or bf(Shift-Insert))
-	in an bf(rxvt) window causes the current text selection to be inserted
+	in an bf(RXVTNAME()) window causes the current text selection to be inserted
 	as if it had been typed on the keyboard.
 enddit()
