@@ -95,9 +95,11 @@ distdir:
 
 tar.gz: distdir
 	tar cvf - $(VERNAME) | gzip -vf9 > $(VERNAME).tar.gz
+	rm -rf $(VERNAME)
 
 tar.bz2: distdir
 	tar cvf - $(VERNAME) | bzip2 -vf9 > $(VERNAME).tar.bz2
+	rm -rf $(VERNAME)
 
 dist: tar.bz2
 
