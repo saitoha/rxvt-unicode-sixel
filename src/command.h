@@ -89,5 +89,4 @@
 # define ESCZ_ANSWER	VT100_ANS	/* obsolete ANSI ESC[c */
 #endif
 
-#include "command.intpro"	/* PROTOS for internal routines */
 #endif	/* _COMMAND_H_ */
