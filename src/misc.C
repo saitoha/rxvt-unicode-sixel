@@ -28,6 +28,13 @@
 #include "misc.intpro"		/* PROTOS for internal routines */
 
 /* EXTPROTO */
+char *
+rxvt_strdup (const char *str)
+{
+  return str ? strdup (str) : 0;
+}
+
+/* EXTPROTO */
 char           *
 rxvt_r_basename(const char *str)
 {

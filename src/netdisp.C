@@ -40,7 +40,6 @@
 
 /*----------------------------------------------------------------------*/
 /* return NULL a pointer to buffer which may be freed */
-/* EXTPROTO */
 char           *
 rxvt_network_display(const char *display)
 {
