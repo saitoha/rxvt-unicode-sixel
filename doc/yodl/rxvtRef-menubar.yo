@@ -96,7 +96,7 @@ P()\
 P()\
     dl(bf([show]nl()[hide]))
 	(control display of the menuBar ... just like
-	link(ESC[?703 h/l)(Priv703))
+	link(ESC[ ? 10 h/l)(Priv10))
 P()\
     dl(bf([pixmap:+em(name)]nl()[pixmap:+em(name);em(scaling)]))
 	(set the background pixmap globally ... just like
