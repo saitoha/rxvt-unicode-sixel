@@ -106,9 +106,9 @@ startdit()
 	Rewrote screen display and text selection routines.
 	Project Coordinator (changes.txt 2.4.6 - rxvt-unicode)
     dit(Marc Alexander Lehmann email(<rxvt@schmorp.de>))
-        Forked rxvt-unicode. Rewrote most of the display code and
+        Forked rxvt-unicode, rewrote most of the display code and
         internal character handling to store text in unicode,
-        improve xterm compatibility and numerous other buffixes
+        improve xterm compatibility and apply numerous other bugfixes
         and extensions. nl()\
 	Project Coordinator (Changes 1.0 - )
 enddit()
