@@ -825,7 +825,7 @@ rxvt_init_xlocale(pR)
     rxvt_print_error("Setting locale failed.");
   else
     {
-      Atom            wmlocale;
+      Atom wmlocale;
 
       wmlocale = XInternAtom(R->Xdisplay, "WM_LOCALE_NAME", False);
       XChangeProperty(R->Xdisplay, R->TermWin.parent[0], wmlocale,
@@ -837,6 +837,7 @@ rxvt_init_xlocale(pR)
           rxvt_print_error("The locale is not supported by Xlib");
           return;
         }
+
       rxvt_setTermFontSet(aR_ 0);
 
       /* see if we can connect yet */
