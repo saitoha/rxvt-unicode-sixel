@@ -200,6 +200,9 @@ static const struct {
     STRG(Rs_inputMethod, "inputMethod", "im", "name", "name of input method"),
     STRG(Rs_preeditType, "preeditType", "pt", "style",
 	 "input style: style = OverTheSpot|OffTheSpot|Root"),
+#if defined(HAVE_XSETLOCALE) || defined(HAVE_SETLOCALE)
+    STRG(Rs_imLocale, "imLocale", "imlocale", "string", "locale to use for input method"),
+#endif
 #endif				/* USE_XIM */
 #ifdef GREEK_SUPPORT
     STRG(Rs_greek_keyboard, "greek_keyboard", "grk", "mode",

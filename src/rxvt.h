@@ -554,6 +554,7 @@ enum {
   Rs_cursorBlink,
   Rs_pointerBlank,
   Rs_pointerBlankDelay,
+  Rs_imLocale,
   NUM_RESOURCES
 };
 

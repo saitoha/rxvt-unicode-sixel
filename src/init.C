@@ -457,7 +457,7 @@ rxvt_init_secondary (pR)
     }
 
 #if defined(HAVE_XSETLOCALE) || defined(HAVE_SETLOCALE)
-  R->locale = setlocale (LC_CTYPE, "");
+  R->locale = strdup (setlocale (LC_CTYPE, ""));
 #endif
 
   /*
