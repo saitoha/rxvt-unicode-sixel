@@ -1186,13 +1186,13 @@ rxvt_term::create_windows (int argc, const char *const *argv)
 #ifdef PREFER_24BIT
   attributes.background_pixel = PixColors[Color_fg];
   attributes.border_pixel = PixColors[Color_border];
-  attributes.colormap = XCMAP;
+  attributes.colormap = Xcmap;
   TermWin.parent[0] = XCreateWindow (Xdisplay, DefaultRootWindow (Xdisplay),
                                        szHint.x, szHint.y,
                                        szHint.width, szHint.height,
                                        TermWin.ext_bwidth,
-                                       XDEPTH, InputOutput,
-                                       XVISUAL,
+                                       Xdepth, InputOutput,
+                                       Xvisual,
                                        CWBackPixel | CWBorderPixel
                                        | CWColormap, &attributes);
 #else
