@@ -1,7 +1,6 @@
 /*---------------------------------*C*--------------------------------------*
  * File:      grkelot.c
  *--------------------------------------------------------------------------*
- * $Id$
  *
  * All portions of code are copyright by their respective author/s.
  * Copyright (c) 1994,1995 Angelo Haritsis. All rights reserved.

@@ -1,7 +1,6 @@
 /*--------------------------------*-C-*---------------------------------*
  * File:	logging.c
  *----------------------------------------------------------------------*
- * $Id$
  *
  * All portions of code are copyright by their respective author/s.
  * Copyright (c) 1992      John Bovey <jdb@ukc.ac.uk>

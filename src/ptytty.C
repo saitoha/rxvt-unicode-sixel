@@ -1,7 +1,6 @@
 /*--------------------------------*-C-*---------------------------------*
  * File:	ptytty.c
  *----------------------------------------------------------------------*
- * $Id$
  *
  * All portions of code are copyright by their respective author/s.
  * Copyright (c) 1999-2001 Geoff Wing <gcw@pobox.com>

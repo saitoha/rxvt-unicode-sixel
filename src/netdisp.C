@@ -1,7 +1,6 @@
 /*--------------------------------*-C-*---------------------------------*
  * File:	netdisp.c
  *----------------------------------------------------------------------*
- * $Id$
  *
  * All portions of code are copyright by their respective author/s.
  * Copyright (c) 1996      Chuck Blake <cblake@BBN.COM>
