@@ -53,7 +53,7 @@ startdit()
     dit(bf(-fg) em(colour))
 	Window foreground colour;
 	resource bf(foreground).
-    dit(bf(-pixmap:) em(file[;geom]))
+    dit(bf(-pixmap) em(file[;geom]))
 	Compile em(XPM): Specify XPM file for the background and also
 	optionally specify its scaling with a geometry string.  Note you
 	may need to add quotes to avoid special shell interpretation of
