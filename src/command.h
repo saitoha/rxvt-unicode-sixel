@@ -2,8 +2,8 @@
  * $Id$
  */
 
-#ifndef _COMMAND_H_
-#define _COMMAND_H_
+#ifndef COMMAND_H_
+#define COMMAND_H_
 
 #define STRING_MAX	512	/* max string size for process_rxvt_xterm_seq() */
 #define ESC_ARGS	32	/* max # of args for esc sequences */

@@ -1,9 +1,5 @@
-/*
- * $Id$
- */
-
-#ifndef _MENUBAR_H_
-#define _MENUBAR_H_
+#ifndef MENUBAR_H_
+#define MENUBAR_H_
 
 typedef struct {
     short           type;	/* must not be changed; first element */

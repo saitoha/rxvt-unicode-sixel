@@ -1,6 +1,5 @@
 /*
  * File:	grkelot.h
- * $Id$
  *
  * Synopsis:	string -> greek ELOT928 string; 4-state FSM.
  *
@@ -22,8 +21,8 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
-#ifndef _GRKELOT_H
-#define _GRKELOT_H
+#ifndef GRKELOT_H
+#define GRKELOT_H
 
 #define GREEK_ELOT928	0
 #define GREEK_IBM437	1

@@ -1,9 +1,5 @@
-/*
- * $Id$
- */
-
-#ifndef _RXVT_H_                /* include once only */
-#define _RXVT_H_
+#ifndef RXVT_H_                /* include once only */
+#define RXVT_H_
 
 #include "rxvtlib.h"
 

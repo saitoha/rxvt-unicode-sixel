@@ -1,7 +1,4 @@
 /* Include prototypes for all files */
-/*
- * $Id$
- */
 #include "command.extpro"
 
 #include "defaultfont.extpro"

@@ -1,9 +1,5 @@
-/*
- * $Id$
- */
-
-#ifndef _INIT_H_
-#define _INIT_H_
+#ifndef INIT_H_
+#define INIT_H_
 
 #undef CERASE /* TODO */
 #define CERASE	'\010'	/* ^H */
