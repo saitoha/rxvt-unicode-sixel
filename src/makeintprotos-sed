@@ -1,5 +1,4 @@
 # Get prototypes from a .c file
-# $Id$
 # /* INTPROTO */   must be above return type which are above function.
 #		Args are on one line
 # eg.

@@ -1,5 +1,5 @@
 /*
- * $Id$
+ * command.h
  */
 
 #ifndef COMMAND_H_

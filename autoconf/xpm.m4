@@ -1,4 +1,3 @@
-dnl> $Id$
 dnl> test to find the hard-to-find libXpm
 dnl> mostly copied from AC_PATH_X & AC_PATH_DIRECT, but explictly set
 

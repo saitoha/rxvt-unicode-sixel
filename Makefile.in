@@ -1,6 +1,7 @@
 # ./Makefile.in			-*- Makefile -*-
-# $Id$
 @MCOMMON@
+
+VERNAME = rxvt-unicode-$(VERSION)
 
 srcdir =	@srcdir@
 VPATH =		@srcdir@
