@@ -1081,7 +1081,6 @@ struct rxvt_term : rxvt_vars {
 /* command input buffering */
   unsigned char  *cmdbuf_ptr, *cmdbuf_endp;
   unsigned char   cmdbuf_base[BUFSIZ];
-  unsigned char   kbuf[KBUFSZ];
 
   rxvt_salloc *ralloc;
   rxvt_salloc *talloc;

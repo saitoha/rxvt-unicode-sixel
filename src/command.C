@@ -66,7 +66,7 @@ rxvt_lookup_key(pR_ XKeyEvent *ev)
     static int      debug_key = 1;	/* accessible by a debugger only */
 #endif
     int             valid_keysym;
-    unsigned char  *kbuf = R->kbuf;
+    unsigned char kbuf[KBUFSZ];
 
 /*
  * use Num_Lock to toggle Keypad on/off.  If Num_Lock is off, allow an

@@ -15,7 +15,7 @@
 #endif
 
 /* a large REFRESH_PERIOD causes problems with `cat' */
-#define REFRESH_PERIOD		1
+#define REFRESH_PERIOD		2
 
 #ifndef MULTICLICK_TIME
 # define MULTICLICK_TIME	500
