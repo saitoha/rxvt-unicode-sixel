@@ -19,6 +19,8 @@
 #include "iom.h"
 #include "salloc.h"
 
+#include <wchar.h>
+
 /*
  *****************************************************************************
  * SYSTEM HACKS
@@ -833,13 +835,11 @@ enum {
 #define BLINK_INTERVAL 0.5
 
 struct mbstate {
-  unsigned char orig;
-  uint32_t reg;
-  int cnt;
+  mbstate_t mbs;
 
   mbstate ()
   {
-    cnt = 0;
+    MEMSET (&mbs, 0, sizeof (mbs));
   }
 };
 
@@ -865,7 +865,8 @@ struct rxvt_term : rxvt_vars {
                   hidden_pointer:1,
 #endif
                   parsed_geometry:1,
-                  seen_input:1;		/* wether any input has been seen so far */
+                  seen_input:1,		/* wether any input has been seen so far */
+                  enc_utf8:1;		/* wether terminal reads/writes utf-8 */
 
   unsigned char   refresh_type,
 #ifdef UTMP_SUPPORT
@@ -886,15 +887,15 @@ struct rxvt_term : rxvt_vars {
 #endif
   short           rvideo;
   int16_t         num_scr;    /* screen: number lines scrolled             */
-  uint16_t       prev_ncol,   /* screen: previous number of columns        */
+  uint16_t        prev_ncol,   /* screen: previous number of columns        */
                   prev_nrow;  /* screen: previous number of rows           */
 #ifdef RXVT_GRAPHICS
-  uint16_t       gr_prev_start;
+  uint16_t        gr_prev_start;
 #endif
 /* ---------- */
   rend_t          rstyle;
 /* ---------- */
-  uint32_t       pixcolor_set[NPIXCLR_SETS];
+  uint32_t        pixcolor_set[NPIXCLR_SETS];
 /* ---------- */
 #ifdef SELECTION_SCROLLING
   int             scroll_selection_delay,
@@ -1130,6 +1131,7 @@ struct rxvt_term : rxvt_vars {
   void init_secondary ();
   const char **init_resources (int argc, const char *const *argv);
   void init_env ();
+  void set_locale (const char *locale);
   void init_xlocale ();
   void init_command (const char *const *argv);
   int run_command (const char *const *argv);
