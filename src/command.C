@@ -774,10 +774,10 @@ rxvt_term::pty_fill ()
       cmdbuf_endp += n;
       return true;
     }
-  else if (n < 0 && errno == EAGAIN)
-    return false;
+  else if (n < 0 && errno != EAGAIN)
+    destroy ();
 
-  destroy ();
+  return false;
 }
 
 void
