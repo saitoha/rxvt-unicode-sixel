@@ -160,7 +160,7 @@ rxvt_init_scrollbar_stuff(pR)
     xcol.red = 0xaeba;
     xcol.green = 0xaaaa;
     xcol.blue = 0xaeba;
-    if (!rxvt_rXAllocColor(aR_ &xcol, "light gray"))
+    //if (!rxvt_rXAllocColor(aR_ &xcol, "light gray"))//TODO//D//
 	xcol.pixel = R->PixColors[Color_AntiqueWhite];
     light = gcvalue.foreground = xcol.pixel;
     R->grayGC = XCreateGC(R->Xdisplay, R->scrollBar.win,
@@ -169,7 +169,7 @@ rxvt_init_scrollbar_stuff(pR)
     xcol.red = 0x51aa;
     xcol.green = 0x5555;
     xcol.blue = 0x5144;
-    if (!rxvt_rXAllocColor(aR_ &xcol, "dark gray"))
+    //if (!rxvt_rXAllocColor(aR_ &xcol, "dark gray"))//TODO//D//
 	xcol.pixel = R->PixColors[Color_Grey25];
     dark = gcvalue.foreground = xcol.pixel;
     R->darkGC = XCreateGC(R->Xdisplay, R->scrollBar.win,

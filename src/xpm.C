@@ -64,7 +64,7 @@ rxvt_scale_pixmap(pR_ const char *geom)
 
     if (geom == NULL)
 	return 0;
-    str = rxvt_malloc(MAXLEN_GEOM + 1);
+    str = (char *)rxvt_malloc (MAXLEN_GEOM + 1);
     if (!STRCMP(geom, "?")) {
 	sprintf(str, "[%dx%d+%d+%d]",	/* can't presume snprintf() ! */
 		min(bgpixmap->w, 9999), min(bgpixmap->h, 9999),
@@ -284,7 +284,7 @@ rxvt_pixmap_incr(unsigned int *wh, unsigned int *xy, float *incr, float *p, unsi
 	    if (pos <= 0)
 		cxy = 0;
 	    else if (pos < cxy)
-		cxy = pos;
+		cxy = (int) pos;
 	    cwh += cxy;
 	} else {	/* expand */
 	    if (cxy > 0) {	/* position */

@@ -113,7 +113,7 @@ rxvt_Gr_NewWindow(pR_ int nargs, int args[])
     grwin->graphics = NULL;
     R->graphics_up++;
 
-    rxvt_tt_printf(aR_ "\033W%ld\n", (long)grwin->win);
+    R->tt_printf("\033W%ld\n", (long)grwin->win);
 }
 
 /* ARGSUSED */

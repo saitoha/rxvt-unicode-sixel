@@ -229,7 +229,7 @@ rxvt_term::scr_reset ()
       swap.cur.row = swap.cur.col = 0;
       swap.charset = 0;
       current_screen = SECONDARY;
-      rxvt_scr_cursor(aR_ SAVE);
+      rxvt_scr_cursor (this, SAVE);
       current_screen = PRIMARY;
 #endif
 

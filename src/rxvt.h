@@ -769,8 +769,8 @@ enum {
 # define rxvt_get_fontwidest(font)      ((font)->max_bounds.width)
 #endif
 
-#define rxvt_Gr_ButtonPress(x,y)        rxvt_Gr_ButtonReport (r, 'P',(x),(y))
-#define rxvt_Gr_ButtonRelease(x,y)      rxvt_Gr_ButtonReport (r, 'R',(x),(y))
+#define rxvt_Gr_ButtonPress(x,y)        rxvt_Gr_ButtonReport (R, 'P',(x),(y))
+#define rxvt_Gr_ButtonRelease(x,y)      rxvt_Gr_ButtonReport (R, 'R',(x),(y))
 
 #ifdef UTMP_SUPPORT
 # if !defined(RXVT_UTMPX_FILE) || !defined(HAVE_STRUCT_UTMPX)
