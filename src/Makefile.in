@@ -133,7 +133,7 @@ allbin: .protos rxvt rxvtd rxvtc
 alldoc:
 
 clean:
-	$(RMF) rxvt core a.out *.o *.lo *.bak *~ *.intpro *.extpro .libs/* librxvt.la tmpproto .protos *.tmp
+	$(RMF) rxvt rxvtc rxvtd core a.out *.o *.lo *.bak *~ *.intpro *.extpro .libs/* librxvt.la tmpproto .protos *.tmp
 
 realclean: clean
 	$(RMF) tags librxvt.h
