@@ -164,6 +164,8 @@ rxvt_term::init (int argc, const char *const *argv)
   x_ev.start (Xfd, EVENT_READ);
   pty_ev.start (cmd_fd, EVENT_READ);
 
+  flush ();
+
   return true;
 }
 

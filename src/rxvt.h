@@ -1138,7 +1138,7 @@ struct rxvt_term : rxvt_vars {
 
   uint32_t next_char ();
 
-  bool pty_fill (size_t count);
+  bool pty_fill ();
   void process_x_events ();
 
   void *operator new (size_t s);

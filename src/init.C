@@ -475,6 +475,7 @@ rxvt_init_secondary(pR)
         close(i);
     }
     dup2(STDERR_FILENO, STDOUT_FILENO);
+#if 0 // schmorp sayz closing filies is murder
     for (i = STDERR_FILENO + 1; i < R->num_fds; i++) {
 #ifdef __sgi                    /* Alex Coventry says we need 4 & 7 too */
         if (i == 4 || i == 7)
@@ -482,6 +483,7 @@ rxvt_init_secondary(pR)
 #endif
         close(i);
     }
+#endif
 }
 
 /*----------------------------------------------------------------------*/
