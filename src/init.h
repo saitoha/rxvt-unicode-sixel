@@ -146,9 +146,6 @@
 #ifndef O_NOCTTY
 # define O_NOCTTY	0
 #endif
-#ifndef O_NDELAY
-# define O_NDELAY	O_NONBLOCK	/* QNX, at least */
-#endif
 #ifndef ONLCR
 # define ONLCR		0		/* QNX, at least */
 #endif

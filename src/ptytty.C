@@ -69,10 +69,10 @@
 int
 rxvt_get_pty(int *fd_tty, const char **ttydev)
 {
-    int             pfd;
+    int pfd;
 
 #ifdef PTYS_ARE_OPENPTY
-    char            tty_name[sizeof "/dev/pts/????\0"];
+    char tty_name[sizeof "/dev/pts/????\0"];
 
     if (openpty(&pfd, fd_tty, tty_name, NULL, NULL) != -1) {
 	*ttydev = strdup(tty_name);
@@ -81,7 +81,7 @@ rxvt_get_pty(int *fd_tty, const char **ttydev)
 #endif
 
 #ifdef PTYS_ARE__GETPTY
-    *ttydev = _getpty(&pfd, O_RDWR | O_NDELAY | O_NOCTTY, 0622, 0);
+    *ttydev = _getpty(&pfd, O_RDWR | O_NONBLOCK | O_NOCTTY, 0622, 0);
     if (*ttydev != NULL)
 	return pfd;
 #endif
