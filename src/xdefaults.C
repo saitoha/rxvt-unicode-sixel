@@ -561,8 +561,13 @@ rxvt_term::get_options (int argc, const char *const *argv)
  *   value will be a string
  */
 /* ARGSUSED */
-bool
-rxvt_define_key(XrmDatabase *database __attribute__((unused)), XrmBindingList bindings __attribute__((unused)), XrmQuarkList quarks, XrmRepresentation *type __attribute__((unused)), XrmValue *value, XPointer closure __attribute__((unused)))
+int
+rxvt_define_key (XrmDatabase *database __attribute__((unused)),
+                 XrmBindingList bindings __attribute__((unused)),
+                 XrmQuarkList quarks,
+                 XrmRepresentation *type __attribute__((unused)),
+                 XrmValue *value,
+                 XPointer closure __attribute__((unused)))
 {
   int             last;
 
@@ -890,14 +895,14 @@ rxvt_term::extract_resources (Display *display __attribute__ ((unused)), const c
     class_prefix[2] = NULLQUARK;
     /* XXX: Need to check sizeof (rxvt_t) == sizeof (XPointer) */
     XrmEnumerateDatabase (XrmGetDatabase (display), name_prefix, class_prefix,
-                         XrmEnumOneLevel, rxvt_define_key, NULL);
+                          XrmEnumOneLevel, rxvt_define_key, NULL);
     name_prefix[0] = XrmStringToName (APL_CLASS);
     name_prefix[1] = XrmStringToName ("keysym");
     class_prefix[0] = XrmStringToName (APL_CLASS);
     class_prefix[1] = XrmStringToName ("Keysym");
     /* XXX: Need to check sizeof (rxvt_t) == sizeof (XPointer) */
     XrmEnumerateDatabase (XrmGetDatabase (display), name_prefix, class_prefix,
-                         XrmEnumOneLevel, rxvt_define_key, NULL);
+                          XrmEnumOneLevel, rxvt_define_key, NULL);
 #   endif
 #  endif
 
