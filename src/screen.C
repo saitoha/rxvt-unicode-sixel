@@ -2458,6 +2458,11 @@ rxvt_term::paste (const unsigned char *data, unsigned int len)
   unsigned int i, j, n;
   unsigned char *ds = (unsigned char *)rxvt_malloc (PROP_SIZE);
   
+#if 0
+  /* a paste should act like the user is typing, so check scrollTtyKeypress */
+  ZERO_SCROLLBACK (r);
+#endif
+
   /* convert normal newline chars into common keyboard Return key sequence */
   for (i = 0; i < len; i += PROP_SIZE)
     {
