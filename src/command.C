@@ -1008,20 +1008,21 @@ rxvt_cmd_getc(pR)
 #endif
 }
 
-#ifdef POINTER_BLANK
 void
 rxvt_term::pointer_unblank ()
 {
-  if (!(Options & Opt_pointerBlank))
-    return;
-
   XDefineCursor (Xdisplay, TermWin.vt, TermWin_cursor);
   rxvt_recolour_cursor (this);
+
+#ifdef POINTER_BLANK
   hidden_pointer = 0;
 
-  pointer_ev.start (NOW + pointerBlankDelay);
+  if (Options & Opt_pointerBlank)
+    pointer_ev.start (NOW + pointerBlankDelay);
+#endif
 }
 
+#ifdef POINTER_BLANK
 void
 rxvt_term::pointer_blank ()
 {
