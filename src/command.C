@@ -697,10 +697,6 @@ rxvt_term::flush ()
     }
 
   XFlush (Xdisplay);
-#if 0
-  if (XPending (Xdisplay)) process_x_events ();
-  if (XPending (Xdisplay)) process_x_events ();
-#endif
 }
 
 void
