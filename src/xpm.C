@@ -69,7 +69,7 @@ rxvt_term::scale_pixmap (const char *geom)
       sprintf (str, "[%dx%d+%d+%d]",	/* can't presume snprintf () ! */
               min (bgpixmap->w, 9999), min (bgpixmap->h, 9999),
               min (bgpixmap->x, 9999), min (bgpixmap->y, 9999));
-      xterm_seq (XTerm_title, str, CHAR_ST);
+      process_xterm_seq (XTerm_title, str, CHAR_ST);
       free (str);
       return 0;
     }
