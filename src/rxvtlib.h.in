@@ -312,6 +312,7 @@ struct rxvt_vars {
   sstyle_t        selection_style;
 };
 
+void rxvt_init_signals ();
 rxvt_t rxvt_init (int argc, const char *const *argv);
 
 #endif                          /* _RXVTLIB_H_ */
