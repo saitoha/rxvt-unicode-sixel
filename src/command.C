@@ -3087,6 +3087,7 @@ rxvt_process_terminal_mode(pR_ int mode, int priv __attribute__((unused)), unsig
 	{ 1010, PrivMode_TtyOutputInh },
 	{ 1011, PrivMode_Keypress },
 	{ 1047, PrivMode_Screen },
+	{ 1049, PrivMode_Screen }, /* xterm extension, not fully implemented */
     };
 
     if (nargs == 0)
@@ -3203,6 +3204,7 @@ rxvt_process_terminal_mode(pR_ int mode, int priv __attribute__((unused)), unsig
 		R->Options &= ~Opt_scrollTtyKeypress;
 	    break;
 	case 1047:		/* secondary screen w/ clearing */
+	case 1049:		/* better secondary screen w/ clearing, but not fully implemented */
 	    if (R->current_screen != PRIMARY)
 		R->scr_erase_screen (2);
 	    rxvt_scr_change_screen(aR_ state);
