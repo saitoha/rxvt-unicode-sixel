@@ -2567,10 +2567,9 @@ rxvt_selection_paste(pR_ Window win, Atom prop, Bool delete_prop)
 void
 rxvt_term::incr_cb (time_watcher &w)
 {
-  w.stop ();
   selection_wait = Sel_none;
 
-  rxvt_print_error("data loss: timeout on INCR selection paste");
+  rxvt_print_error ("data loss: timeout on INCR selection paste");
 }
 
 /*

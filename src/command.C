@@ -758,9 +758,10 @@ rxvt_term::process_x_events ()
 void
 rxvt_term::blink_cb (time_watcher &w)
 {
-  w.at += BLINK_INTERVAL;
   hidden_cursor = !hidden_cursor;
   want_refresh = 1;
+
+  w.start (w.at + BLINK_INTERVAL);
 }
 #endif
 
@@ -1039,8 +1040,6 @@ rxvt_term::pointer_unblank ()
 void
 rxvt_term::pointer_blank ()
 {
-  pointer_ev.stop ();
-
   if (!(Options & Opt_pointerBlank))
     return;
 
