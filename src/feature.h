@@ -159,8 +159,8 @@
  * Define defaults for backspace and delete keys - unless they have been
  * configured out with --disable-backspace-key / --disable-delete-key
  */
-/* #define DEFAULT_BACKSPACE	"DEC"		*/ /* SPECIAL */
-#define DEFAULT_BACKSPACE	"\010"
+//#define DEFAULT_BACKSPACE	"DEC"		/* SPECIAL */
+#define DEFAULT_BACKSPACE	"\010"		/* wrong, but match terminfo etc. */
 #define DEFAULT_DELETE	"\033[3~"
 
 /*
