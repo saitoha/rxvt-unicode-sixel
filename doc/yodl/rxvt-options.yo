@@ -67,11 +67,6 @@ startdit()
         pther fonts might be smaller, but not larger. A reasonable default list
         is appended.
 	resource bf(font).
-    dit(bf(-grk) em(mode))
-	Compile em(Greek): Greek keyboard translation;
-	bf(iso): ISO-8859 mapping.
-	bf(ibm): IBM-437 mapping;
-	resource bf(greek_keyboard).
     dit(bf(-name) em(name))
 	Specify the application name under which resources
 	are to be obtained, rather than the default executable file name.

@@ -2,10 +2,6 @@ COMMENT(-- $Id$ --)
 COMMENT(----------------------------------------------------------------------)
 manpagesection(COLORS AND GRAPHICS)
 
-If graphics support was enabled at compile-time, bf(rxvt) can be queried
-with ANSI escape sequences and can address individual pixels instead of
-text characters.  Note the graphics support is still considered beta code.
-
 In addition to the default foreground and background colours, bf(rxvt)
 can display up to 16 colours (8 ANSI colours plus high-intensity bold/blink
 versions of the same).
