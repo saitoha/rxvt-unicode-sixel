@@ -1,8 +1,0 @@
-COMMENT(-- $Id$ --)
-COMMENT(----------------------------------------------------------------------)
-manpagesection(FILES)
-
-startdit()
-    dit(bf(/etc/utmp)) System file for login records.
-    dit(bf(/usr/lib/X11/rgb.txt)) Color names.
-enddit()

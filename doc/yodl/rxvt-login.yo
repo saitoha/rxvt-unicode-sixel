@@ -1,7 +1,0 @@
-COMMENT(-- $Id$ --)
-COMMENT(----------------------------------------------------------------------)
-manpagesection(LOGIN STAMP)
-
-bf(RXVTNAME()) tries to write an entry into the em(utmp)(5) file so that it can be
-seen via the em(who(1)) command, and can accept messages.  To allow this
-feature, bf(RXVTNAME()) must be installed setuid root on some systems.
