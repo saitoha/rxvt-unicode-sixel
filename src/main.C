@@ -69,7 +69,8 @@ rxvt_term::rxvt_term ()
 #endif
   x_ev       (this, &rxvt_term::x_cb),
   destroy_ev (this, &rxvt_term::destroy_cb),
-  check_ev   (this, &rxvt_term::check_cb)
+  check_ev   (this, &rxvt_term::check_cb),
+  incr_ev    (this, &rxvt_term::incr_cb)
 {
   cmdbuf_ptr = cmdbuf_endp = cmdbuf_base;
 }
