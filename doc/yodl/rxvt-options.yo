@@ -42,7 +42,8 @@ startdit()
     dit(bf(-fade) em(number))
     	Fade the text by the given percentage when focus is lost.
     dit(bf(-tint) em(colour))
-        Tint the transparent background pixmap with the given colour.
+        Tint the transparent background pixmap with the given colour when
+        transparency is enabled with bf(-tr) or bf(-ip).
     dit(bf(-bg) em(colour))
 	Window background colour;
         resource bf(background).
