@@ -75,7 +75,7 @@
  * software in question is broken enough to be case insensitive to the 'c'
  * character in the answerback string, we make the distinguishing
  * characteristic be capitalization of that character. The length of the
- * two strings should be the same so that identical read(2) calls may be
+ * two strings should be the same so that identical read (2) calls may be
  * used.
  */
 #define VT100_ANS	"\033[?1;2c"	/* vt100 answerback */
