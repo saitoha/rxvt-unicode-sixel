@@ -299,7 +299,6 @@ struct rxvt_vars {
   int             Xfd;          /* file descriptor of X server connection    */
   int             cmd_fd;       /* pty file descriptor; connected to command */
   int             tty_fd;       /* tty file descriptor; connected to child   */
-  int             num_fds;      /* number of file descriptors being used     */
   int             numlock_state;
   text_t        **drawn_text;   /* text drawn on screen (characters)         */
   rend_t        **drawn_rend;   /* text drawn on screen (rendition)          */
