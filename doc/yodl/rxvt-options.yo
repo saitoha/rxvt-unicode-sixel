@@ -39,6 +39,8 @@ startdit()
 	Turn on/off inheriting parent window's pixmap.  Alternative form
 	is bf(-tr);
 	resource bf(inheritPixmap).
+    dit(bf(-tint) em(colour))
+        Tint the transparent background pixmap with the given colour.
     dit(bf(-bg) em(colour))
 	Window background colour;
         resource bf(background).
