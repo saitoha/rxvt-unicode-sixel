@@ -291,7 +291,7 @@ rxvt_term::scr_reset ()
           /* add rows */
           scr_reset_realloc (); /* realloc _first_ */
 
-          TermWin.ncol =  prev_ncol; // save b/c scr_blank_screen_mem uses this
+          TermWin.ncol = prev_ncol; // save b/c scr_blank_screen_mem uses this
 
           k = min (TermWin.nscrolled, nrow - prev_nrow);
 

@@ -887,7 +887,7 @@ struct rxvt_term : rxvt_vars {
 #endif
   short           rvideo;
   int16_t         num_scr;    /* screen: number lines scrolled             */
-  uint16_t        prev_ncol,   /* screen: previous number of columns        */
+  unsigned int    prev_ncol,  /* screen: previous number of columns        */
                   prev_nrow;  /* screen: previous number of rows           */
 #ifdef RXVT_GRAPHICS
   uint16_t        gr_prev_start;
