@@ -241,6 +241,8 @@ rxvt_term::init (int argc, const char *const *argv)
 
   check_ev.start ();
 
+  process_x_events ();
+
   return true;
 }
 
