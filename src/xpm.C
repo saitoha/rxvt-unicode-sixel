@@ -377,17 +377,18 @@ rxvt_term::set_bgPixmap (const char *file)
                                  &bgPixmap.pixmap, NULL,
                                  &xpmAttr))
         {
-          char           *p;
+          char *p;
 
           /* semi-colon delimited */
           if ((p = STRCHR (file, ';')) == NULL)
             p = STRCHR (file, '\0');
 
-          rxvt_print_error ("couldn't load XPM file \"%.*s\"", (p - file),
-                           file);
+          rxvt_warn ("couldn't load XPM file \"%.*s\", ignoring.", (p - file), file);
         }
+
       free (f);
     }
+
   resize_pixmap ();
   return bgPixmap.pixmap;
 }
