@@ -92,7 +92,7 @@ rxvt_lookup_key(pR_ XKeyEvent *ev)
 	Status status_return;
 
 #ifdef X_HAVE_UTF8_STRING
-        if (R->enc_utf8)
+        if (R->enc_utf8 && 0)
           len = Xutf8LookupString (R->Input_Context, ev, (char *)kbuf,
                                    KBUFSZ, &keysym, &status_return);
         else
@@ -637,7 +637,7 @@ rxvt_lookup_key(pR_ XKeyEvent *ev)
 	fprintf(stderr, "'\n");
     }
 #endif				/* DEBUG_CMD */
-    R->tt_write(kbuf, (unsigned int)len);
+    R->tt_write (kbuf, (unsigned int)len);
 }
 /*}}} */
 

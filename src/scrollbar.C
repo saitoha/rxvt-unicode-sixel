@@ -156,8 +156,8 @@ rxvt_scrollbar_show(pR_ int update)
     R->last_top = R->scrollBar.top;
     R->last_bot = R->scrollBar.bot;
     R->last_state = R->scrollBar.state;
-
 #endif
+
     return ret;
 }
 
