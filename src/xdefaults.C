@@ -500,7 +500,7 @@ rxvt_term::get_options (int argc, const char *const *argv)
             flag = flag == On ? Off : On;
           if (optList_strlen(entry))
             {	/* string value */
-              const char     *str = argv[++i];
+              const char *str = argv[++i];
 
 #ifdef DEBUG_RESOURCES
               fprintf(stderr, "string (%s,%s) = ",
