@@ -1476,8 +1476,8 @@ rxvt_process_x_event(pR_ XEvent *ev)
 		    R->selection_extend ((ev->xbutton.x), (ev->xbutton.y),
 				  (ev->xbutton.state & Button3Mask) ? 2 : 0);
 #ifdef SELECTION_SCROLLING
-		    if (ev->xbutton.y<R->TermWin.int_bwidth ||
-			Pixel2Row(ev->xbutton.y)>(R->TermWin.nrow-1)) {
+		    if (ev->xbutton.y < R->TermWin.int_bwidth
+                        || Pixel2Row(ev->xbutton.y) > (R->TermWin.nrow-1)) {
 			int dist;
 			
 			R->pending_scroll_selection=1;
