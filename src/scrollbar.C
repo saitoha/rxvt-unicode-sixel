@@ -107,7 +107,7 @@ rxvt_Resize_scrollBar(pR)
 #ifdef DEBUG_X
 	XStoreName(R->Xdisplay, R->scrollBar.win, "scrollbar");
 #endif
-	XDefineCursor(R->Xdisplay, R->scrollBar.win, R->pointer_leftptr);
+	XDefineCursor(R->Xdisplay, R->scrollBar.win, R->leftptr_cursor);
 	XSelectInput(R->Xdisplay, R->scrollBar.win,
 		     (ExposureMask | ButtonPressMask | ButtonReleaseMask
 		      | Button1MotionMask | Button2MotionMask

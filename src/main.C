@@ -60,11 +60,14 @@ rxvt_term::operator delete (void *p, size_t s)
 }
 
 rxvt_term::rxvt_term ()
-: pty_ev   (this, &rxvt_term::pty_cb),
+: pty_ev     (this, &rxvt_term::pty_cb),
 #ifdef CURSOR_BLINK
-  blink_ev (this, &rxvt_term::blink_cb),
+  blink_ev   (this, &rxvt_term::blink_cb),
 #endif
-  x_ev     (this, &rxvt_term::x_cb)
+#ifdef POINTER_BLANK
+  pointer_ev (this, &rxvt_term::pointer_cb),
+#endif
+  x_ev       (this, &rxvt_term::x_cb)
 {
   cmdbuf_ptr = cmdbuf_endp = cmdbuf_base;
 }
