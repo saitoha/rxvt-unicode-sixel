@@ -28,9 +28,8 @@ struct rxvt_fontprop {
     medium = 100, bold = 200,
     roman  = 0, italic = 100,
   };
-  int height;
-  int weight;
-  int slant;
+  int width, height;
+  int weight, slant;
 };
 
 struct rxvt_font {
