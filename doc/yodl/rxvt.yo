@@ -68,8 +68,6 @@ Cursor change support is not yet implemented.
 
 Click-and-drag doesn't work with X11 mouse report overriding.
 
-Graphics support is fairly crude.
-
 
 COMMENT(----------------------------------------------------------------------)
 manpagesection(FTP LOCATION)

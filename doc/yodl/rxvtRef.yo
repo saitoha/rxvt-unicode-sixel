@@ -26,7 +26,6 @@ startit()
     it()link(menuBar)(menuBar)
     it()link(XPM)(XPM)
     it()link(Mouse Reporting)(Mouse)
-    it()link(Special Graphics Mode)(Graphics)
     it()link(Key Codes)(KeyCodes)
 endit()
 
