@@ -386,7 +386,7 @@ rxvt_term::init_vars()
     cmd_pid = -1;
     cmd_fd = tty_fd = Xfd = -1;
     PrivateModes = SavedModes = PrivMode_Default;
-    TermWin.focus = 1;
+    TermWin.focus = 0;
     TermWin.ncol = 80;
     TermWin.nrow = 24;
     TermWin.int_bwidth = INTERNALBORDERWIDTH;
