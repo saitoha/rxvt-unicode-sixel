@@ -1,9 +1,5 @@
-ChangeLog
 config.cache
 config.h
 config.log
 config.status
-configure
-libtool
 Makefile
-*.lsm
