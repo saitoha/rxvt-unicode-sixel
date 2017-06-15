@@ -30,6 +30,175 @@
 #include "rxvtperl.h"           /* NECESSARY */
 
 #include <inttypes.h>
+#include <stdio.h>
+
+// tempfile_t manipulation
+
+typedef struct {
+  FILE *fp;
+  unsigned int ref_counter;
+} tempfile_t;
+
+typedef struct {
+  tempfile_t *tempfile;
+  size_t position;
+} temp_storage_t;
+
+static tempfile_t *tempfile_current = NULL;
+static size_t tempfile_num = 0;
+static size_t const TEMPFILE_MAX_SIZE = 1024 * 1024 * 16;  /* 16MB */
+static size_t const TEMPFILE_MAX_NUM = 16;
+
+static tempfile_t *
+tempfile_new (void)
+{
+  tempfile_t *tempfile;
+  FILE *fp;
+
+  fp = tmpfile();
+  if (!fp)
+    return NULL;
+
+  tempfile = (tempfile_t *)rxvt_malloc (sizeof(tempfile_t));
+  if (!tempfile)
+    return NULL;
+
+  tempfile->fp = fp;
+  tempfile->ref_counter = 1;
+
+  tempfile_num++;
+
+  return tempfile;
+}
+
+static void
+tempfile_destroy(tempfile_t *tempfile)
+{
+  if (tempfile == tempfile_current)
+    tempfile_current = NULL;
+  fclose((FILE *)tempfile->fp);
+  free (tempfile);
+  tempfile_num--;
+}
+
+static void
+tempfile_ref(tempfile_t *tempfile)
+{
+  tempfile->ref_counter++;
+}
+
+static void
+tempfile_deref(tempfile_t *tempfile)
+{
+  if (--tempfile->ref_counter == 0)
+    tempfile_destroy(tempfile);
+}
+
+static size_t
+tempfile_size(tempfile_t *tempfile)
+{
+  fpos_t fsize = 0;
+
+  fseek((FILE *)tempfile->fp, 0L, SEEK_END);
+  fgetpos((FILE *)tempfile->fp, &fsize);
+
+  return (size_t)fsize;
+}
+
+static tempfile_t *
+tempfile_get(void)
+{
+  size_t size;
+
+  if (!tempfile_current)
+    {
+      tempfile_current = tempfile_new();
+      return tempfile_current;
+    }
+
+  /* get file size */
+  size = tempfile_size(tempfile_current);
+
+  /* if the file size reaches TEMPFILE_MAX_SIZE, return new temporary file */
+  if (size > TEMPFILE_MAX_SIZE)
+    {
+      tempfile_current = tempfile_new();
+      return tempfile_current;
+    }
+
+  /* increment reference counter */
+  tempfile_ref (tempfile_current);
+
+  return tempfile_current;
+}
+
+static bool
+tempfile_write(tempfile_t *tempfile, void *p, size_t pos, size_t size)
+{
+  size_t nbytes;
+
+  fseek ((FILE *)tempfile->fp, pos, SEEK_SET);
+  nbytes = fwrite(p, 1, size, tempfile->fp);
+  if (nbytes != size)
+    return false;
+
+  return true;
+}
+
+static bool
+tempfile_read(tempfile_t *tempfile, void *p, size_t pos, size_t size)
+{
+  size_t nbytes;
+
+  fflush((FILE *)tempfile->fp);
+  fseek((FILE *)tempfile->fp, pos, SEEK_SET);
+  nbytes = fread (p, 1, size, (FILE *)tempfile->fp);
+  if (nbytes != size)
+    return false;
+
+  return true;
+}
+
+// temp_storage_t implementation
+
+static temp_storage_t *
+storage_create(void)
+{
+  temp_storage_t *storage;
+  tempfile_t *tempfile;
+
+  tempfile = tempfile_get ();
+  if (!tempfile)
+    return NULL;
+
+  storage = (temp_storage_t *)rxvt_malloc (sizeof(temp_storage_t));
+  if (!storage)
+    return NULL;
+
+  storage->tempfile = tempfile;
+  storage->position = tempfile_size(storage->tempfile);
+
+  return storage;
+}
+
+static void
+storage_destroy (temp_storage_t *storage)
+{
+  tempfile_deref (storage->tempfile);
+  free (storage);
+}
+
+static bool
+storage_write(temp_storage_t *storage, void *p, size_t size)
+{
+  return tempfile_write (storage->tempfile, p, storage->position, size);
+}
+
+static bool
+storage_read(temp_storage_t *storage, void *p, size_t size)
+{
+  return tempfile_read (storage->tempfile, p, storage->position, size);
+}
 
 static inline void
 fill_text (text_t *start, text_t value, int len)
@@ -586,6 +755,8 @@ rxvt_term::scr_change_screen (int scrn)
       ::swap (screen.flags,   swap.flags);
       screen.flags |= Screen_VisibleCursor;
       swap.flags   |= Screen_VisibleCursor;
+
+//      ::swap (images, swap_images);
     }
   else
 #endif
@@ -673,6 +844,7 @@ rxvt_term::scr_scroll_text (int row1, int row2, int count) NOTHROW
 
       // scroll everything up 'count' lines
       term_start = (term_start + count) % total_rows;
+      virtual_lines += count;
 
       // now copy lines below the scroll region bottom to the
       // bottom of the screen again, so they look as if they
@@ -2437,6 +2609,136 @@ rxvt_term::scr_refresh () NOTHROW
             }
         }                     /* for (col....) */
     }                         /* for (row....) */
+
+  /*
+   * F: draw sixel images
+   */
+  if (images)
+    {
+      imagelist_t *im;
+      GC tmpgc;
+      int trow, brow;
+      int nlimit;
+      XRectangle *rects;
+      int n, x, y;
+      XImage xi = { 0 };
+
+      for (im = images; im; im = im->next)
+        {
+          trow = im->row - virtual_lines;
+          brow = trow + (im->pxheight + fheight - 1) / fheight;
+          if (brow <= top_row)
+            {
+              if (im->prev)
+                im->prev->next = im->next;
+              else
+                images = im->next;
+              if (im->next)
+                im->next->prev = im->prev;
+              if (im->drawable)
+                XFreePixmap (dpy, im->drawable);
+              if (im->storage)
+                storage_destroy((temp_storage_t *)im->storage);
+              free (im->pixels);
+              free (im);
+              continue;
+            }
+          if (trow >= view_start + nrow || brow <= view_start)
+            {
+              if (! im->storage)
+                {
+                  if (im->drawable)
+                    {
+                      XFreePixmap (dpy, im->drawable);
+                      im->drawable = NULL;
+                    }
+                  if (! im->storage)
+                      im->storage = storage_create();
+                  if (! storage_write ((temp_storage_t *)im->storage, im->pixels, im->pxwidth * im->pxheight * 4))
+                    break;
+                  free (im->pixels);
+                  im->pixels = NULL;
+                }
+              continue;
+            }
+          if (! im->drawable)
+            {
+              if (! im->pixels)
+                {
+                  im->pixels = (unsigned char *)rxvt_malloc (im->pxwidth * im->pxheight * 4);
+                  if (! storage_read ((temp_storage_t *)im->storage, im->pixels, im->pxwidth * im->pxheight * 4))
+                    break;
+                  storage_destroy ((temp_storage_t *)im->storage);
+                  im->storage = NULL;
+                  assert (im->pixels);
+                }
+              XInitImage (&xi);
+              xi.format = ZPixmap;
+              xi.data = (char *)im->pixels;
+              xi.width = im->pxwidth;
+              xi.height = im->pxheight;
+              xi.xoffset = 0;
+              xi.byte_order = LSBFirst;
+              xi.bitmap_bit_order = MSBFirst;
+              xi.bits_per_pixel = 32;
+              xi.bytes_per_line = im->pxwidth * 4;
+              xi.bitmap_unit = 32;
+              xi.bitmap_pad = 32;
+              xi.depth = 24;
+              im->drawable = XCreatePixmap(dpy, vt, im->pxwidth, im->pxheight, DefaultDepth (dpy, 0));
+              XPutImage (dpy, im->drawable, gc, &xi, 0, 0, 0, 0, im->pxwidth, im->pxheight);
+          }
+        rects = NULL;
+        nlimit = 256;
+        n = 0;
+        x = 0;
+        y = 0;
+        for (y = trow - view_start; y < brow - view_start; y++)
+          {
+            if (y >= 0 && y < nrow)
+              {
+                for (x = im->col; x < im->col + (im->pxwidth + fwidth - 1) / fwidth && x < ncol; x++)
+                  {
+                    if (!rects)
+                      rects = (XRectangle *)rxvt_malloc(sizeof(XRectangle) * nlimit);
+                    if (ROW(y + view_start).t[x] == CHAR_IMAGE)
+                      {
+                        if (n > 0 && rects[n - 1].x + rects[n - 1].width == 0 + x * fwidth && rects[n - 1].y == 0 + y * fheight)
+                          {
+                            rects[n - 1].width += fwidth;
+                          }
+                        else
+                          {
+                            rects[n].x = 0 + x * fwidth;
+                            rects[n].y = 0 + y * fheight;
+                            rects[n].width = fwidth;
+                            rects[n].height = fheight;
+                            if (++n == nlimit && (rects = (XRectangle *)rxvt_realloc(rects, sizeof(XRectangle) * (nlimit *= 2))) == NULL)
+                              break;
+                          }
+                      }
+                  }
+              }
+            if (n > 1 && rects[n - 2].x == rects[n - 1].x && rects[n - 2].width == rects[n - 1].width)
+              {
+                if (rects[n - 2].y + rects[n - 2].height == rects[n - 1].y)
+                  {
+                    rects[n - 2].height += fheight;
+                    n--;
+                  }
+              }
+          }
+        tmpgc = XCreateGC (dpy, vt, 0, 0);
+        XSetClipRectangles(dpy, tmpgc, 0, 0, rects, n, YXSorted);
+        free (rects);
+        XCopyArea (dpy, im->drawable, vt,
+                   tmpgc, 0, 0,
+                   im->pxwidth, im->pxheight,
+                   (unsigned int)Width2Pixel (im->col),
+                   (unsigned int)Height2Pixel (im->row - virtual_lines - view_start));
+        XFreeGC(dpy, tmpgc);
+      }
+    }
 
   /*
    * G: cleanup cursor and display outline cursor if necessary

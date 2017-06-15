@@ -58,7 +58,7 @@
  * two strings should be the same so that identical read (2) calls may be
  * used.
  */
-#define VT100_ANS	"\033[?1;2c"	/* vt100 answerback */
+#define VT100_ANS	"\033[?1;2;4c"	/* vt100 answerback(1;2) + sixel graphics(4) */
 #ifndef ESCZ_ANSWER
 # define ESCZ_ANSWER	VT100_ANS	/* obsolete ANSI ESC[c */
 #endif
