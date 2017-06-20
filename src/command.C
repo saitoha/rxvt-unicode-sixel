@@ -51,6 +51,7 @@
 #include "rxvtperl.h"
 #include "version.h"
 #include "command.h"
+#include "sixel.h"
 
 #ifdef KEYSYM_RESOURCE
 # include "keyboard.h"
@@ -2865,6 +2866,8 @@ rxvt_term::process_csi_seq ()
           case '?':
             if (ch == 'h' || ch == 'l' || ch == 'r' || ch == 's' || ch == 't')
               process_terminal_mode (ch, priv, nargs, arg);
+            else if (ch == 'S')
+              process_graphics_attributes (nargs, arg);
             break;
 
           case '!':
@@ -3262,15 +3265,215 @@ rxvt_term::get_to_st (unicode_t &ends_how)
 void
 rxvt_term::process_dcs_seq ()
 {
-  /*
-   * Not handled yet
-   */
+  unicode_t ch;
+  unsigned char c;
+  const int max_params = 16;
+  int params[max_params] = { 0 };
+  int nparams = 0;
+  int cmd = 0;
+  enum {
+    DCS_START,
+    DCS_PARAM,
+    DCS_INTERMEDIATE,
+    DCS_PASSTHROUGH,
+    DCS_IGNORE,
+    DCS_ESC
+  };
+  int st = DCS_START;
+  int x, y;
+  sixel_state_t sixel_st = { PS_GROUND };
+  imagelist_t *new_image;
+  line_t l;
 
-  unicode_t eh;
-  char *s = get_to_st (eh);
-  if (s)
-    free (s);
+  while (1) {
+    if ((ch = next_char ()) == NOCHAR) {
+        pty_fill ();
+        continue;
+    }
+    c = ch & 0xff;
+    switch (st) {
+    case DCS_START:
+    case DCS_PARAM:
+      switch (c) {
+      case '\030':  /* CAN */
+        goto end;
+      case '\032':  /* SUB */
+        st = DCS_IGNORE;
+        break;
+      case '\033':
+        st = DCS_ESC;
+        break;
+      case ' ' ... '/':
+        cmd = cmd << 8 | c;
+        st = cmd > (0xff << 16) ? DCS_IGNORE : DCS_INTERMEDIATE;
+        break;
+      case '0' ... '9':
+        params[nparams] = params[nparams] * 10 + c - '0';
+        st = params[nparams] > 256 ? DCS_IGNORE : DCS_PARAM;
+        break;
+      case ';':
+        if (++nparams == max_params)
+          st = DCS_IGNORE;
+        else
+          params[nparams] = 0;
+        break;
+      case ':':
+        st = DCS_IGNORE;
+        break;
+      case '<' ... '?':
+        cmd = cmd << 8 | c;
+        st = cmd > (0xff << 16) ? DCS_IGNORE : DCS_PARAM;
+        break;
+      case '@' ... '~':
+        cmd = cmd << 8 | c;
+        st = cmd > (0xff << 16) ? DCS_IGNORE : DCS_PASSTHROUGH;
+        break;
+      default:
+        st = DCS_IGNORE;
+        break;
+      }
+      break;
+    case DCS_INTERMEDIATE:
+      switch (c) {
+      case '\030':  /* CAN */
+        goto end;
+      case '\032':  /* SUB */
+        st = DCS_IGNORE;
+        break;
+      case '\033':
+        st = DCS_ESC;
+        break;
+      case ' ' ... '/':
+        cmd = cmd << 8 | c;
+        st = cmd > (0xff << 16) ? DCS_IGNORE : DCS_INTERMEDIATE;
+        break;
+      case '@' ... '~':
+        cmd = cmd << 8 | c;
+        st = cmd > (0xff << 16) ? DCS_IGNORE : DCS_PASSTHROUGH;
+        break;
+      default:
+        st = DCS_IGNORE;
+        break;
+      }
+      break;
+    case DCS_PASSTHROUGH:
+      switch (c) {
+      case '\030':  /* CAN */
+        goto end;
+      case '\032':  /* SUB */
+        st = DCS_IGNORE;
+        break;
+      case '\033':
+        st = DCS_ESC;
+        break;
+      default:
+        switch (cmd) {
+        case 'q':  /* DECSIXEL */
+          switch (sixel_st.state) {
+            case PS_GROUND:
+              {
+                rgba fg = pix_colors[Color_fg];
+                rgba bg = pix_colors[Color_bg];
+                sixel_parser_init(&sixel_st,
+                                  fg.b >> 8 << 16 | fg.g >> 8 << 8 | fg.r >> 8,
+                                  bg.b >> 8 << 16 | bg.g >> 8 << 8 | bg.r >> 8,
+                                  1, fwidth, fheight);
+              }
+              break;
+            default:
+              sixel_parser_parse(&sixel_st, &c, 1);
+              break;
+          }
+          break;
+        default:
+          break;
+        }
+        break;
+      }
+      break;
+    case DCS_IGNORE:
+      switch (c) {
+      case '\030':  /* CAN */
+        goto end;
+      case '\032':  /* SUB */
+        st = DCS_IGNORE;
+        break;
+      case '\033':
+        st = DCS_ESC;
+        break;
+      default:
+        st = DCS_IGNORE;
+        break;
+      }
+      break;
+    case DCS_ESC:
+      switch (c) {
+      case '\\':
+        switch (cmd) {
+        case 'q':  /* DECSIXEL */
+          new_image = (imagelist_t *)rxvt_calloc (1, sizeof(imagelist_t));
+          new_image->pixels = (unsigned char *)rxvt_malloc (sixel_st.image.width * sixel_st.image.height * 4);
+          (void) sixel_parser_finalize (&sixel_st, new_image->pixels);
+          sixel_parser_deinit(&sixel_st);
+          new_image->col = screen.cur.col;
+          new_image->row = screen.cur.row + virtual_lines;
+          new_image->pxwidth = sixel_st.image.width;
+          new_image->pxheight = sixel_st.image.height;
+          if (this->images) {
+            imagelist_t *im;
+            for (im = this->images; im->next; im = im->next)
+              ;
+            new_image->prev = im;
+            im->next = new_image;
+          } else {
+            this->images = new_image;
+          }
 
+          for (y = 0; y < Pixel2Row (new_image->pxheight + fheight - 1); ++y)
+            {
+              if ((priv_modes & PrivMode_SixelDisplay))
+                l = ROW(screen.cur.row + y);
+              else
+                l = ROW(screen.cur.row);
+              for (x = 0; x < min (ncol - screen.cur.col, Pixel2Col (new_image->pxwidth + fwidth - 1)); ++x)
+                {
+                  l.t[screen.cur.col + x] = CHAR_IMAGE;
+                  l.r[screen.cur.col + x] = RS_None;
+                }
+              if (!(priv_modes & PrivMode_SixelDisplay))
+                {
+                  if (y == Pixel2Row (new_image->pxheight + fheight - 1) - 1)  // on last row
+                    {
+                      if ((priv_modes & PrivMode_SixelScrsRight))
+                        {
+                          screen.cur.col += x;
+                        }
+                      else
+                        {
+                          scr_index (UP);
+                          if ((priv_modes & PrivMode_SixelScrsLeft))
+                            scr_gotorc (0, 0, R_RELATIVE);
+                        }
+                    }
+                  else
+                    {
+                      scr_index (UP);
+                    }
+                }
+            }
+          break;
+        default:
+          break;
+        }
+        goto end;
+      default:
+        goto end;
+      }
+    default:
+      break;
+    }
+  }
+end:
   return;
 }
 
@@ -3695,6 +3898,7 @@ rxvt_term::process_terminal_mode (int mode, int priv ecb_unused, unsigned int na
 #ifndef NO_BACKSPACE_KEY
                   { 67, PrivMode_BackSpace },   // DECBKM
 #endif
+                  { 80, PrivMode_SixelDisplay },   // DECSDM sixel display mode
                   { 1000, PrivMode_MouseX11 },
                   { 1002, PrivMode_MouseBtnEvent },
                   { 1003, PrivMode_MouseAnyEvent },
@@ -3715,6 +3919,10 @@ rxvt_term::process_terminal_mode (int mode, int priv ecb_unused, unsigned int na
                   { 1049, PrivMode_Screen }, /* xterm extension, clear screen on ti rather than te */
                  // 1051, 1052, 1060, 1061 keyboard emulation NYI
                   { 2004, PrivMode_BracketPaste },
+                 // 7730 sixel-scrolls-left mode, originally proposed by mintty
+                  { 7730, PrivMode_SixelScrsLeft },
+                 // 8452 sixel-scrolls-right mode, originally proposed by RLogin
+                  { 8452, PrivMode_SixelScrsRight },
                 };
 
   if (nargs == 0)
@@ -4028,6 +4236,62 @@ rxvt_term::process_sgr_mode (unsigned int nargs, const int *arg)
             break;
 #endif
         }
+    }
+}
+
+void
+rxvt_term::process_graphics_attributes (unsigned int nargs, const int *arg)
+{
+  if (nargs != 3)
+    return;
+  switch (arg[0])
+    {
+      case 1:  /* number of sixel color palette */
+        switch (arg[1])
+          {
+            case 1:  /* read */
+              tt_printf ("\033[?%d;%d;%dS", arg[0], 0, 256);
+              break;
+            case 2:  /* reset to default */
+              tt_printf ("\033[?%d;%d;%dS", arg[0], 0, 256);
+              break;
+            case 3:  /* set */
+              if (arg[2] == 256)
+                tt_printf ("\033[?%d;%d;%dS", arg[0], 0, 256);
+              else
+                tt_printf ("\033[?%d;%d;%dS", arg[0], 3, 0);
+              break;
+            case 4:  /* read the maximum value */
+              tt_printf ("\033[?%d;%d;%dS", arg[0], 0, 256);
+              break;
+            default:
+              tt_printf ("\033[?%d;%d;%dS", arg[0], 2, 0);
+              break;
+          }
+        break;
+      case 2:  /* geometory of sixel graphics */
+        switch (arg[1])
+          {
+            case 1:  /* read */
+              tt_printf ("\033[?%d;%d;%d;%dS", arg[0], 0, ncol * fwidth, nrow * fheight);
+              break;
+            case 2:  /* reset to default */
+              tt_printf ("\033[?%d;%d;%d;%dS", arg[0], 3, 0, 0);
+              break;
+            case 3:  /* set */
+              tt_printf ("\033[?%d;%d;%d;%dS", arg[0], 3, 0, 0);
+              break;
+            case 4:  /* read the maximum value */
+              tt_printf ("\033[?%d;%d;%d;%dS", arg[0], 3, 0, 0);
+              break;
+            default:
+              tt_printf ("\033[?%d;%d;%d;%dS", arg[0], 2, 0, 0);
+              break;
+          }
+        break;
+      default:
+        tt_printf ("\033[?%d;%d;%dS", arg[0], 1, 0);
+        break;
     }
 }
 

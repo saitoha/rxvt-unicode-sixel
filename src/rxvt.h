@@ -389,6 +389,7 @@ enum {
   C0_CAN, C0_EM , C0_SUB, C0_ESC, C0_IS4, C0_IS3, C0_IS2, C0_IS1,
 };
 #define CHAR_ST                 0x9c    /* 0234 */
+#define CHAR_IMAGE              0x01    /* special character for image area */
 
 /*
  * XTerm Operating System Commands: ESC ] Ps;Pt (ST|BEL)
@@ -576,6 +577,15 @@ enum {
 #define PrivMode_ExtMouseRight  (1UL<<24) // xterm pseudo-utf-8, but works in non-utf-8-locales
 #define PrivMode_BlinkingCursor (1UL<<25)
 #define PrivMode_FocusEvent     (1UL<<26)
+#define PrivMode_SixelDisplay   (1UL<<27) // sixel display mode
+/*  DECSET 7730: sixel scrolling end position
+ *  on: sixel scrolling moves cursor to beginning of the line
+ *  off(default): sixel scrolling moves cursor to left of graphics */
+#define PrivMode_SixelScrsLeft  (1UL<<28)
+/*  DECSET 8452: sixel scrolling end position right
+ *  on: sixel scrolling leaves cursor to right of graphic
+ *  off(default): position after sixel depends on sixel_scrolls_left */
+#define PrivMode_SixelScrsRight (1UL<<29)
 
 #define PrivMode_mouse_report   (PrivMode_MouseX10|PrivMode_MouseX11|PrivMode_MouseBtnEvent|PrivMode_MouseAnyEvent)
 
@@ -901,6 +911,7 @@ struct TermWin_t
   int            term_start;    /* term lines start here                    */
   int            view_start;    /* scrollback view starts here              */
   int            top_row;       /* topmost row index of scrollback          */
+  int            virtual_lines;
   Window         parent;        /* parent identifier                        */
   Window         vt;            /* vt100 window                             */
   GC             gc;            /* GC for drawing                           */
@@ -984,6 +995,18 @@ enum {
   Opt_count
 };
 
+struct imagelist_t
+{
+  imagelist_t *prev, *next;
+  unsigned char *pixels;
+  Drawable drawable;
+  void *storage;
+  int col;
+  int row;
+  int pxwidth;
+  int pxheight;
+};
+
 /* ------------------------------------------------------------------------- */
 
 struct rxvt_vars : TermWin_t
@@ -1005,6 +1028,7 @@ struct rxvt_vars : TermWin_t
 #ifdef OFF_FOCUS_FADING
   rxvt_color      pix_colors_unfocused[TOTAL_COLORS];
 #endif
+  imagelist_t     *images;
 };
 
 struct rxvt_term : zero_initialized, rxvt_vars, rxvt_screen
@@ -1297,6 +1321,7 @@ struct rxvt_term : zero_initialized, rxvt_vars, rxvt_screen
   int privcases (int mode, unsigned long bit);
   void process_terminal_mode (int mode, int priv, unsigned int nargs, const int *arg);
   void process_sgr_mode (unsigned int nargs, const int *arg);
+  void process_graphics_attributes (unsigned int nargs, const int *arg);
   void set_cursor_style (int style);
   // init.C
   void init (stringvec *argv, stringvec *envv);
