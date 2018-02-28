@@ -97,12 +97,11 @@ tempfile_deref(tempfile_t *tempfile)
 static size_t
 tempfile_size(tempfile_t *tempfile)
 {
-  fpos_t fsize = 0;
+  struct stat info;
 
-  fseek((FILE *)tempfile->fp, 0L, SEEK_END);
-  fgetpos((FILE *)tempfile->fp, &fsize);
+  fstat(fileno(tempfile->fp), &info);
 
-  return (size_t)fsize;
+  return info.st_size;
 }
 
 static tempfile_t *
