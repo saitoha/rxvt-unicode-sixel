@@ -8,9 +8,8 @@
 #include <string.h>  /* memcpy */
 
 #include "sixel.h"
-#include "sixel_hls.h"
 
-#define SIXEL_RGB(r, g, b) ((r) + ((g) << 8) +  ((b) << 16))
+#define SIXEL_RGB(r, g, b) ((r) | ((g) << 8) | ((b) << 16))
 #define PALVAL(n,a,m) (((n) * (a) + ((m) / 2)) / (m))
 #define SIXEL_XRGB(r,g,b) SIXEL_RGB(PALVAL(r, 255, 100), PALVAL(g, 255, 100), PALVAL(b, 255, 100))
 
@@ -32,6 +31,70 @@ static colour const sixel_default_color_table[] = {
 	SIXEL_XRGB(60, 60, 33),  /* 14 Yellow*  */
 	SIXEL_XRGB(80, 80, 80),  /* 15 Gray 75% */
 };
+
+/*
+ * Primary color hues:
+ *  blue:    0 degrees
+ *  red:   120 degrees
+ *  green: 240 degrees
+ */
+int
+hls_to_rgb(int hue, int lum, int sat)
+{
+    double min, max;
+    int r, g, b;
+
+    if (sat == 0) {
+        r = g = b = lum;
+    }
+
+    /* https://wikimedia.org/api/rest_v1/media/math/render/svg/17e876f7e3260ea7fed73f69e19c71eb715dd09d */
+    max = lum + sat * (1.0 - (lum > 50 ? (((lum << 2) / 100.0) - 1.0): - (2 * (lum / 100.0) - 1.0))) / 2.0;
+
+    /* https://wikimedia.org/api/rest_v1/media/math/render/svg/f6721b57985ad83db3d5b800dc38c9980eedde1d */
+    min = lum - sat * (1.0 - (lum > 50 ? (((lum << 2) / 100.0) - 1.0): - (2 * (lum / 100.0) - 1.0))) / 2.0;
+
+    /* sixel hue color ring is roteted -120 degree from nowdays general one. */
+    hue = (hue + 240) % 360;
+
+    /* https://wikimedia.org/api/rest_v1/media/math/render/svg/937e8abdab308a22ff99de24d645ec9e70f1e384 */
+    switch (hue / 60) {
+    case 0:  /* 0 <= hue < 60 */
+        r = max;
+        g = (min + (max - min) * (hue / 60.0));
+        b = min;
+        break;
+    case 1:  /* 60 <= hue < 120 */
+        r = min + (max - min) * ((120 - hue) / 60.0);
+        g = max;
+        b = min;
+        break;
+    case 2:  /* 120 <= hue < 180 */
+        r = min;
+        g = max;
+        b = (min + (max - min) * ((hue - 120) / 60.0));
+        break;
+    case 3:  /* 180 <= hue < 240 */
+        r = min;
+        g = (min + (max - min) * ((240 - hue) / 60.0));
+        b = max;
+        break;
+    case 4:  /* 240 <= hue < 300 */
+        r = (min + (max - min) * ((hue - 240) / 60.0));
+        g = min;
+        b = max;
+        break;
+    case 5:  /* 300 <= hue < 360 */
+        r = max;
+        g = min;
+        b = (min + (max - min) * ((360 - hue) / 60.0));
+        break;
+    default:
+        break;
+    }
+
+    return SIXEL_XRGB(r, g, b);
+}
 
 static int
 set_default_color(sixel_image_t *image)
