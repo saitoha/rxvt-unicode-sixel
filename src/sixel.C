@@ -9,9 +9,9 @@
 
 #include "sixel.h"
 
-#define SIXEL_RGB(r, g, b) ((r) | ((g) << 8) | ((b) << 16))
-#define PALVAL(n,a,m) (((n) * (a) + ((m) / 2)) / (m))
-#define SIXEL_XRGB(r,g,b) SIXEL_RGB(PALVAL(r, 255, 100), PALVAL(g, 255, 100), PALVAL(b, 255, 100))
+#define SIXEL_XRGB(r,g,b) (((r) * 255 + 50) / 100) << 0 | \
+                          (((g) * 255 + 50) / 100) << 8 | \
+                          (((b) * 255 + 50) / 100) << 16
 
 static colour const sixel_default_color_table[] = {
 	SIXEL_XRGB(0,  0,  0),   /*  0 Black    */
@@ -41,59 +41,59 @@ static colour const sixel_default_color_table[] = {
 int
 hls_to_rgb(int hue, int lum, int sat)
 {
-    double min, max;
-    int r, g, b;
+	double min, max;
+	int r, g, b;
 
-    if (sat == 0) {
-        r = g = b = lum;
-    }
+	if (sat == 0) {
+		r = g = b = lum;
+	}
 
-    /* https://wikimedia.org/api/rest_v1/media/math/render/svg/17e876f7e3260ea7fed73f69e19c71eb715dd09d */
-    max = lum + sat * (1.0 - (lum > 50 ? (((lum << 2) / 100.0) - 1.0): - (2 * (lum / 100.0) - 1.0))) / 2.0;
+	/* https://wikimedia.org/api/rest_v1/media/math/render/svg/17e876f7e3260ea7fed73f69e19c71eb715dd09d */
+	max = lum + sat * (1.0 - (lum > 50 ? (((lum << 2) / 100.0) - 1.0): - (2 * (lum / 100.0) - 1.0))) / 2.0;
 
-    /* https://wikimedia.org/api/rest_v1/media/math/render/svg/f6721b57985ad83db3d5b800dc38c9980eedde1d */
-    min = lum - sat * (1.0 - (lum > 50 ? (((lum << 2) / 100.0) - 1.0): - (2 * (lum / 100.0) - 1.0))) / 2.0;
+	/* https://wikimedia.org/api/rest_v1/media/math/render/svg/f6721b57985ad83db3d5b800dc38c9980eedde1d */
+	min = lum - sat * (1.0 - (lum > 50 ? (((lum << 2) / 100.0) - 1.0): - (2 * (lum / 100.0) - 1.0))) / 2.0;
 
-    /* sixel hue color ring is roteted -120 degree from nowdays general one. */
-    hue = (hue + 240) % 360;
+	/* sixel hue color ring is roteted -120 degree from nowdays general one. */
+	hue = (hue + 240) % 360;
 
-    /* https://wikimedia.org/api/rest_v1/media/math/render/svg/937e8abdab308a22ff99de24d645ec9e70f1e384 */
-    switch (hue / 60) {
-    case 0:  /* 0 <= hue < 60 */
-        r = max;
-        g = (min + (max - min) * (hue / 60.0));
-        b = min;
-        break;
-    case 1:  /* 60 <= hue < 120 */
-        r = min + (max - min) * ((120 - hue) / 60.0);
-        g = max;
-        b = min;
-        break;
-    case 2:  /* 120 <= hue < 180 */
-        r = min;
-        g = max;
-        b = (min + (max - min) * ((hue - 120) / 60.0));
-        break;
-    case 3:  /* 180 <= hue < 240 */
-        r = min;
-        g = (min + (max - min) * ((240 - hue) / 60.0));
-        b = max;
-        break;
-    case 4:  /* 240 <= hue < 300 */
-        r = (min + (max - min) * ((hue - 240) / 60.0));
-        g = min;
-        b = max;
-        break;
-    case 5:  /* 300 <= hue < 360 */
-        r = max;
-        g = min;
-        b = (min + (max - min) * ((360 - hue) / 60.0));
-        break;
-    default:
-        break;
-    }
+	/* https://wikimedia.org/api/rest_v1/media/math/render/svg/937e8abdab308a22ff99de24d645ec9e70f1e384 */
+	switch (hue / 60) {
+	case 0:  /* 0 <= hue < 60 */
+		r = max;
+		g = (min + (max - min) * (hue / 60.0));
+		b = min;
+		break;
+	case 1:  /* 60 <= hue < 120 */
+		r = min + (max - min) * ((120 - hue) / 60.0);
+		g = max;
+		b = min;
+		break;
+	case 2:  /* 120 <= hue < 180 */
+		r = min;
+		g = max;
+		b = (min + (max - min) * ((hue - 120) / 60.0));
+		break;
+	case 3:  /* 180 <= hue < 240 */
+		r = min;
+		g = (min + (max - min) * ((240 - hue) / 60.0));
+		b = max;
+		break;
+	case 4:  /* 240 <= hue < 300 */
+		r = (min + (max - min) * ((hue - 240) / 60.0));
+		g = min;
+		b = max;
+		break;
+	case 5:  /* 300 <= hue < 360 */
+		r = max;
+		g = min;
+		b = (min + (max - min) * ((360 - hue) / 60.0));
+		break;
+	default:
+		break;
+	}
 
-    return SIXEL_XRGB(r, g, b);
+	return SIXEL_XRGB(r, g, b);
 }
 
 static int
@@ -244,7 +244,7 @@ int
 sixel_parser_init(sixel_state_t *st,
                   colour fgcolor, colour bgcolor,
                   unsigned char use_private_register,
-		  int cell_width, int cell_height)
+                  int cell_width, int cell_height)
 {
 	int status = (-1);
 
@@ -533,7 +533,7 @@ sixel_parser_parse(sixel_state_t *st, unsigned char *p, size_t len)
 					st->attributed_pad = 1;
 
 				if (image->width < st->attributed_ph ||
-				        image->height < st->attributed_pv) {
+					image->height < st->attributed_pv) {
 					sx = st->attributed_ph;
 					if (image->width > st->attributed_ph)
 						sx = image->width;

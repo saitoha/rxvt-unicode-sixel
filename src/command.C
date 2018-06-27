@@ -4250,19 +4250,19 @@ rxvt_term::process_graphics_attributes (unsigned int nargs, const int *arg)
         switch (arg[1])
           {
             case 1:  /* read */
-              tt_printf ("\033[?%d;%d;%dS", arg[0], 0, 256);
+              tt_printf ("\033[?%d;%d;%dS", arg[0], 0, DECSIXEL_PALETTE_MAX);
               break;
             case 2:  /* reset to default */
-              tt_printf ("\033[?%d;%d;%dS", arg[0], 0, 256);
+              tt_printf ("\033[?%d;%d;%dS", arg[0], 0, DECSIXEL_PALETTE_MAX);
               break;
             case 3:  /* set */
-              if (arg[2] == 256)
-                tt_printf ("\033[?%d;%d;%dS", arg[0], 0, 256);
+              if (arg[2] == DECSIXEL_PALETTE_MAX)
+                tt_printf ("\033[?%d;%d;%dS", arg[0], 0, DECSIXEL_PALETTE_MAX);
               else
                 tt_printf ("\033[?%d;%d;%dS", arg[0], 3, 0);
               break;
             case 4:  /* read the maximum value */
-              tt_printf ("\033[?%d;%d;%dS", arg[0], 0, 256);
+              tt_printf ("\033[?%d;%d;%dS", arg[0], 0, DECSIXEL_PALETTE_MAX);
               break;
             default:
               tt_printf ("\033[?%d;%d;%dS", arg[0], 2, 0);

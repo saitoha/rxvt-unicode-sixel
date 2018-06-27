@@ -23,7 +23,7 @@ typedef struct sixel_image_buffer {
 } sixel_image_t;
 
 typedef enum parse_state {
-        PS_GROUND     = 0,
+	PS_GROUND     = 0,
 	PS_ESC        = 1,  /* ESC */
 	PS_DECSIXEL   = 2,  /* DECSIXEL body part ", $, -, ? ... ~ */
 	PS_DECGRA     = 3,  /* DECGRA Set Raster Attributes " Pan; Pad; Ph; Pv */

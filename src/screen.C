@@ -2624,7 +2624,7 @@ rxvt_term::scr_refresh () NOTHROW
       GC clipgc;
       int trow, brow;  // top, bottom
       int nlimit = 256;  //  num of allocated rects
-      XRectangle *rects = NULL, *itrect = NULL;
+      XRectangle *rects = NULL, *itrect = NULL, *p = NULL;
       int n, x, y;
       XImage xi;
 
@@ -2704,6 +2704,7 @@ rxvt_term::scr_refresh () NOTHROW
               XPutImage (dpy, im->drawable, gc, &xi, 0, 0, 0, 0, im->pxwidth, im->pxheight);
             }
 
+          // XXX: this is shoddy work!!
           // construct clipping rectangle array
           itrect = rects = NULL;
           for (y = trow - view_start; y < brow - view_start; y++)  // for rows
@@ -2723,13 +2724,20 @@ rxvt_term::scr_refresh () NOTHROW
 
                   for (x = im->col; x < im->col + Pixel2Col (im->pxwidth + fwidth - 1) && x < ncol; x++)  // for cols
                     {
-                      // allocate rectangle array
+                      // lazy initialization for rectangle array
                       if (!rects)
                         itrect = rects = (XRectangle *)rxvt_malloc (sizeof (XRectangle) * nlimit);
-                      if (itrect - rects == nlimit)
-                        rects = (XRectangle *)rxvt_realloc (rects, sizeof (XRectangle) * (nlimit *= 2));
                       if (rects == NULL)
                         break;
+
+                      // resize rectangle array
+                      if (itrect - rects == nlimit)
+                        {
+                          p = (XRectangle *)rxvt_realloc (rects, sizeof (XRectangle) * (nlimit *= 2));
+                          if (p == NULL)
+                            break;
+                          rects = p;
+                        }
 
                       if (ROW(view_start + y).t[x] == CHAR_IMAGE)
                         {
